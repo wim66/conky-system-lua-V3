@@ -13,5 +13,12 @@ then
 # start clock conky
  sh conky-clock-lua-V1/start.sh
 fi
- 
+
+if 
+grep -q "show_CORES=true" settings.lua ;
+then
+# start  cores conky
+ sh conky-cores-lua/start.sh
+fi
+
 exit

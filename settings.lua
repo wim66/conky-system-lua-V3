@@ -2,6 +2,7 @@
 function conky_vars()
     
     show_CLOCK=true
+    show_CORES=true
 
     -- Set network interface for all scripts here
     var_NETWORK = "wlp3s0" --bars & graphs

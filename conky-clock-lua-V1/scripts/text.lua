@@ -115,7 +115,7 @@ function conky_draw_text()
 
 		{
 			text=conky_parse( "${time %d %B}" ),
-			font_name="ubuntu",
+			font_name="IBM Plex Sans",
 			font_size=18,
 			h_align="r",
 			v_align="m",
@@ -128,7 +128,7 @@ function conky_draw_text()
 
 		{
 			text=conky_parse( "${time %d %B}" ),
-			font_name="ubuntu",
+			font_name="IBM Plex Sans",
 			font_size=18,
 			h_align="r",
 			v_align="m",

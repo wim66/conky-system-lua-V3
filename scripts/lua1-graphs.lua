@@ -129,7 +129,7 @@ function set_settings()
 {
 	name="upspeedf",
 	arg=var_NETWORK,
-	max=2000,
+	max=400,
 	x=20,
 	y=420,
  	autoscale=true,
@@ -147,7 +147,7 @@ function set_settings()
 {
 	name="downspeedf",
 	arg=var_NETWORK,
-	max=400,
+	max=2000,
 	x=140,
 	y=420,
  	autoscale=true,

@@ -88,7 +88,6 @@ function conky_draw_text()
 
 		{
 			text=conky_parse("${if_existing /usr/bin/lsb_release} ${execi 10000 lsb_release -d | cut -f 2}${else} $distribution  ${endif}"),
-			font_name="ubuntu",
 			font_size=22,
 			h_align="c",
 			x=xc,
@@ -254,7 +253,7 @@ function conky_draw_text()
 
         
    		{
-			text=conky_parse("${if_existing /usr/lib/update-notifier/apt-check} ${execi 3000 /usr/lib/update-notifier/apt-check --human-readable | awk 'NR==1'}${else} Available updates: ${execi 3000 checkupdates | wc -l}  ${endif}"),
+			text=conky_parse("${if_existing /usr/lib/update-notifier/apt-check} ${execi 1800 /usr/lib/update-notifier/apt-check --human-readable | awk 'NR==1'}${else} Available updates: ${execi 1800 checkupdates | wc -l}  ${endif}"),
 			h_align="c",
 			x=xc,
 			y=600,
@@ -263,7 +262,7 @@ function conky_draw_text()
 		},
         
            		{
-			text=conky_parse( "${if_existing /usr/lib/update-notifier/apt-check} ${execi 3000 /usr/lib/update-notifier/apt-check --human-readable | awk 'NR==2'} ${endif}" ),
+			text=conky_parse( "${if_existing /usr/lib/update-notifier/apt-check} ${execi 1800 /usr/lib/update-notifier/apt-check --human-readable | awk 'NR==2'} ${endif}" ),
 			h_align="c",
 			x=xc,
 			y=620,
@@ -325,7 +324,7 @@ function display_text(t)
     if t.x==nil then t.x = conky_window.width/2 end
     if t.y==nil then t.y = conky_window.height/2 end
     if t.colour==nil then t.colour={{0,0XFFFFFF,1},{0.6,0xFFFFFF,0.7}, {1,0xFFFFFF,0.2}} end
-    if t.font_name==nil then t.font_name="ubuntu" end
+    if t.font_name==nil then t.font_name="IBM Plex Sans" end
     if t.font_size==nil then t.font_size=14 end
     if t.angle==nil then t.angle=0 end
     if t.italic==nil then t.italic=false end

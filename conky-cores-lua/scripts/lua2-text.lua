@@ -96,8 +96,15 @@ function conky_draw_text()
 		},        
 
         {
-			text="Core 1                           Core 2",
-			x=20,
+			text="Core 1",
+			x=23,
+			y=50,
+			colour=color3,
+		},
+        
+        {
+			text="Core 2",
+			x=142,
 			y=50,
 			colour=color3,
 		},
@@ -119,8 +126,15 @@ function conky_draw_text()
 		},
         
         {
-			text="Core 3                           Core 4",
-			x=20,
+			text="Core 3",
+			x=23,
+			y=110,
+			colour=color3,
+		},
+        
+        {
+			text="Core 4",
+			x=142,
 			y=110,
 			colour=color3,
 		},

@@ -10,14 +10,17 @@ function conky_vars()
     
     var_TOTALUP = "${totalup wlp3s0}"
     var_TOTALDOWN = "${totaldown wlp3s0}"
-      
+    
+    border_COLOR = "green" --options are green, blue, orange or default
+    
+    use_FONT = "arial"
 end
 
 --[[
 #########################
 # conky-system-lua-V3   #
 # by +WillemO @wim66    #
-# v1.0 8-dec-17         #
+# v1.1 16-dec-17        #
 #                       #
 #########################
 ]]

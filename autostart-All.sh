@@ -8,10 +8,10 @@ killall conky
         cd "$(dirname "$0")"
 
     ( set -x; setsid conky -c conky.conf )
-    
+    sleep 1
 # start clock conky
  sh conky-clock-lua-V1/autostart.sh
-
+sleep 1
 # start  cores conky
  sh conky-cores-lua/autostart.sh
 

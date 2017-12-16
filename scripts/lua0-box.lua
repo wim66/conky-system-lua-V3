@@ -3,7 +3,7 @@
 #########################
 # conky-system-lua-V3   #
 # by +WillemO @wim66    #
-# v1.0 8-dec-17         #
+# v1.1 16-dec-17        #
 #                       #
 #########################
 ]]
@@ -107,6 +107,7 @@ function conky_main_box()
     if conky_window==nil then return end
     
 	---------------------- PARAMETERS BEGIN HERE
+                                                          
     local boxes_settings={
 
 {
@@ -117,7 +118,7 @@ function conky_main_box()
 
 	{
 	x=4,y=4,w=257,h=650,
-	colour= { {1,0x34495E,1} }, 
+	colour=color_x, linear_gradient={128,50,128,600}, 
         corners={ {"circle",5},}, border=4 
 	},
 
@@ -210,13 +211,18 @@ function draw_box(cr,t)
     end   
 
     --check values and set default values
+    if border_COLOR == "default" then color_x = { {1,0x34495E,1} } end
+    if border_COLOR == "green" then color_x = { {0,0x003E00,1}, {0.5,0x03F404,1}, {1,0x003E00,1} } end
+    if border_COLOR == "blue" then color_x =  { {0,0x002C8E,1}, {0.5,0x6790EB,1}, {1,0x002C8E,1} } end
+    if border_COLOR == "orange" then color_x =  { {0,0xE05700,1}, {0.5,0xFFD145,1}, {1,0xE05700,1} } end
+                                                                                       
     if t.x == nil then t.x = 0 end
     if t.y == nil then t.y = 0 end
     if t.w == nil then t.w = conky_window.width end
     if t.h == nil then t.h = conky_window.height end
     if t.radius == nil then t.radius = 0 end
     if t.border == nil then t.border = 0 end
-    if t.colour==nil then t.colour={{1,0xFFFFFF,0.5}} end
+    if t.colour==nil then t.colour={{1,0x34495E,1}} end
     if t.linear_gradient ~= nil then 
         if #t.linear_gradient ~= 4 then
             t.linear_gradient = {t.x,t.y,t.width,t.height}

@@ -2,7 +2,7 @@
 #########################
 # conky-system-lua-V3   #
 # by +WillemO @wim66    #
-# v1.0 8-dec-17         #
+# v1.1 16-dec-17        #
 #                       #
 #########################
 ]]
@@ -257,6 +257,7 @@ function conky_draw_text()
 			h_align="c",
 			x=xc,
 			y=600,
+            font_name="arial",
             font_size=12,
 			colour=color3,
 		},
@@ -266,6 +267,7 @@ function conky_draw_text()
 			h_align="c",
 			x=xc,
 			y=620,
+            font_name="arial",
             font_size=12,
 			colour=color3,
 		},
@@ -324,7 +326,7 @@ function display_text(t)
     if t.x==nil then t.x = conky_window.width/2 end
     if t.y==nil then t.y = conky_window.height/2 end
     if t.colour==nil then t.colour={{0,0XFFFFFF,1},{0.6,0xFFFFFF,0.7}, {1,0xFFFFFF,0.2}} end
-    if t.font_name==nil then t.font_name="IBM Plex Sans" end
+    if t.font_name==nil then t.font_name=use_FONT end
     if t.font_size==nil then t.font_size=14 end
     if t.angle==nil then t.angle=0 end
     if t.italic==nil then t.italic=false end

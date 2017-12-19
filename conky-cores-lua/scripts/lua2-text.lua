@@ -2,7 +2,7 @@
 #########################
 # conky-cores-lua       #
 # by +WillemO @wim66    #
-# v1.1 16-dec-17        #
+# v1.2 19-dec-17        #
 #                       #
 #########################
 ]]
@@ -91,7 +91,7 @@ function conky_draw_text()
 			text=conky_parse("${execi 6000 cat /proc/cpuinfo | grep -i 'Model name' -m 1 | cut -c14-43}"),
             h_align="c",
 			x=xc,
-			y=26,
+			y=30,
 			colour=color2,
 		},        
 

@@ -2,7 +2,7 @@
 #########################
 # conky-clock-lua-V1    #
 # by +WillemO @wim66    #
-# v1.1 16-dec-17        #
+# v1.2 19-dec-17        #
 #                       #
 #########################
 ]]
@@ -115,7 +115,6 @@ function conky_draw_text()
 
 		{
 			text=conky_parse( "${time %d %B}" ),
-			font_name="IBM Plex Sans",
 			font_size=18,
 			h_align="r",
 			v_align="m",
@@ -128,7 +127,6 @@ function conky_draw_text()
 
 		{
 			text=conky_parse( "${time %d %B}" ),
-			font_name="IBM Plex Sans",
 			font_size=18,
 			h_align="r",
 			v_align="m",

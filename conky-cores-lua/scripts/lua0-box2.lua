@@ -2,7 +2,7 @@
 #########################
 # conky-cores-lua       #
 # by +WillemO @wim66    #
-# v1.1 16-dec-17        #
+# v1.2 19-dec-17        #
 #                       #
 #########################
 ]]
@@ -113,6 +113,7 @@ function conky_main_box()
 	x=10,y=10,w=245,h=158,
 	colour= { {1,0x000000,0.66} }, 
         corners={ {"circle",5},},
+
 	},
 
 	{
@@ -123,7 +124,7 @@ function conky_main_box()
 
 	{
 	x=8,y=8,w=249,h=162,
-	colour= { {0,0xFFFFFF,0.05}, {0.5,0xC2C2C2,0.2}, {1,0xFFFFFF,0.05}}, linear_gradient={0,30,0,506},
+	colour= { {0,0xFFFFFF,0.05}, {0.5,0xC2C2C2,0.2}, {1,0xFFFFFF,0.05}}, linear_gradient={0,0,0,162},
 	},
 
 }

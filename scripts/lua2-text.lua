@@ -109,7 +109,7 @@ function conky_draw_text()
 
 		{
 			text=conky_parse("${if_existing /usr/bin/lsb_release} ${execi 10000 lsb_release -d | cut -f 2}${else} $distribution  ${endif}"),
-            font_name="Abyssinica",bold=true,
+            font_name="Dejavu Sans Mono",bold=true,
             font_size=22, bold="true",
 			h_align="c",
 			x=xc,

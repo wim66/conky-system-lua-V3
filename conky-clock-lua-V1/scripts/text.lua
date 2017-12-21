@@ -2,19 +2,25 @@
 #########################
 # conky-clock-lua-V1    #
 # by +WillemO @wim66    #
-# v1.2 19-dec-17        #
+# v1.3 21-dec-17        #
 #                       #
 #########################
 ]]
 
 
---[[TEXT WIDGET v1.3 by Wlourf 25/06/2010
+--[[TEXT WIDGET v1.42 by Wlourf 07 Feb. 2011
+
 This widget can drawn texts set in the "text_settings" table with some parameters
 http://u-scripts.blogspot.com/2010/06/text-widget.html
 
+To call the script in a conky, use, before TEXT
+	lua_load /path/to/the/script/graph.lua
+	lua_draw_hook_pre main_graph
+and add one line (blank or not) after TEXT
+
 The parameters (all optionals) are :
 text        - text to display, default = "Conky is good for you"
-			  use conky_parse to display conky value ie text=conly_parse("${cpu cpu1}")
+              it can be used with conky variables, i.e. text="my cpu1 is ${cpu cpu1} %")
             - coordinates below are relative to top left corner of the conky window
 x           - x coordinate of first letter (bottom-left), default = center of conky window
 y           - y coordinate of first letter (bottom-left), default = center of conky window
@@ -55,20 +61,35 @@ reflection_scale    - scale of the reflection (default = 1 = height of text)
 reflection_length   - length of reflection, define where the opacity will be set to zero
 					  calues from 0 to 1, default =1
 skew_x,skew_y    - skew text around x or y axis
-			  
+draw_me     - if set to false, text is not drawn (default = true or 1)
+              it can be used with a conky string, if the string returns 1, the text is drawn :
+              example : "${if_empty ${wireless_essid wlan0}}${else}1$endif",
+              
 
-Needs conky 1.8.0 
 
-To call this script in the conkyrc, in before-TEXT section:
-    lua_load /path/to/the/lua/script/text.lua
-    lua_draw_hook_pre draw_text
- 
 v1.0	07/06/2010, Original release
 v1.1	10/06/2010	Add "orientation" parameter
 v1.2	15/06/2010  Add "h_align", "v_align" and "radial" parameters
 v1.3	25/06/2010  Add "reflection_alpha", "reflection_length", "reflection_scale", 
                     "skew_x" et "skew_y"
+v1.4    07/01/2011  Add draw_me parameter and correct memory leaks, thanks to "Creamy Goodness"
+                    text is parsed inside the function, not in the array of settings
+v1.41   26/01/2011  Correct bug for h_align="c"    
+v1.42   09/02/2011  Correct bug for orientation="ee"                
 
+--      This program is free software; you can redistribute it and/or modify
+--      it under the terms of the GNU General Public License as published by
+--      the Free Software Foundation version 3 (GPLv3)
+--     
+--      This program is distributed in the hope that it will be useful,
+--      but WITHOUT ANY WARRANTY; without even the implied warranty of
+--      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+--      GNU General Public License for more details.
+--     
+--      You should have received a copy of the GNU General Public License
+--      along with this program; if not, write to the Free Software
+--      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+--      MA 02110-1301, USA.		
 
 ]]
 require 'cairo'
@@ -109,7 +130,6 @@ function conky_draw_text()
 			bold=false,
 			x=244,
 			y=52,
-			orientation="nn",
 			colour=color1,
 		},
 
@@ -140,7 +160,8 @@ function conky_draw_text()
 
 
     
---------------END OF PARAMETERES----------------
+--------------END OF PARAMETERS----------------
+
     if conky_window == nil then return end
     if tonumber(conky_parse("$updates"))<3 then return end
        
@@ -150,22 +171,22 @@ function conky_draw_text()
         cr = cairo_create (cs)
         display_text(v)
         cairo_destroy(cr)
+	    cr = nil
     end
     
     cairo_surface_destroy(cs)
-    
-
 
 end
 
 function rgb_to_r_g_b2(tcolour)
-    colour,alpha=tcolour[2],tcolour[3]
+    local colour,alpha=tcolour[2],tcolour[3]
     return ((colour / 0x10000) % 0x100) / 255., ((colour / 0x100) % 0x100) / 255., (colour % 0x100) / 255., alpha
 end
 
 function display_text(t)
-
-    local function set_pattern()
+    if t.draw_me==true then t.draw_me = nil end
+    if t.draw_me~=nil and conky_parse(tostring(t.draw_me)) ~= "1" then return end
+    local function set_pattern(te)
         --this function set the pattern
         if #t.colour==1 then 
             cairo_set_source_rgba(cr,rgb_to_r_g_b2(t.colour[1]))
@@ -183,6 +204,7 @@ function display_text(t)
                 cairo_pattern_add_color_stop_rgba (pat, t.colour[i][1], rgb_to_r_g_b2(t.colour[i]))
             end
             cairo_set_source (cr, pat)
+            cairo_pattern_destroy(pat)
         end
     end
     
@@ -190,7 +212,7 @@ function display_text(t)
     if t.text==nil then t.text="Conky is good for you !" end
     if t.x==nil then t.x = conky_window.width/2 end
     if t.y==nil then t.y = conky_window.height/2 end
-    if t.colour==nil then t.colour={{0,0XFFFFFF,1},{0.6,0xFFFFFF,0.7}, {1,0xFFFFFF,0.2}} end
+    if t.colour==nil then t.colour={{1,0xFFFFFF,1}} end
     if t.font_name==nil then t.font_name=use_FONT end
     if t.font_size==nil then t.font_size=14 end
     if t.angle==nil then t.angle=0 end
@@ -203,7 +225,7 @@ function display_text(t)
             t.radial=nil 
         end
     end
-    if t.orientation==nil then t.orientation="nn" end
+    if t.orientation==nil then t.orientation="ww" end
     if t.h_align==nil then t.h_align="l" end
     if t.v_align==nil then t.v_align="b" end    
     if t.reflection_alpha == nil then t.reflection_alpha=0 end
@@ -215,10 +237,8 @@ function display_text(t)
     cairo_rotate(cr,t.angle*math.pi/180)
     cairo_save(cr)       
      
- 
-
     local slant = CAIRO_FONT_SLANT_NORMAL
-    local weight =CAIRO_FONT_WEIGHT_NORMAL
+    local weight = CAIRO_FONT_WEIGHT_NORMAL
     if t.italic then slant = CAIRO_FONT_SLANT_ITALIC end
     if t.oblique then slant = CAIRO_FONT_SLANT_OBLIQUE end
     if t.bold then weight = CAIRO_FONT_WEIGHT_BOLD end
@@ -233,21 +253,21 @@ function display_text(t)
     end
 
     local matrix0 = cairo_matrix_t:create()
-    skew_x,skew_y=t.skew_x/t.font_size,t.skew_y/t.font_size
+    tolua.takeownership(matrix0) 
+    local skew_x,skew_y=t.skew_x/t.font_size,t.skew_y/t.font_size
     cairo_matrix_init (matrix0, 1,skew_y,skew_x,1,0,0)
     cairo_transform(cr,matrix0)
     cairo_set_font_size(cr,t.font_size)
-    te=cairo_text_extents_t:create()
+    local te=cairo_text_extents_t:create()
+    tolua.takeownership(te) 
+    t.text=conky_parse(t.text)
     cairo_text_extents (cr,t.text,te)
-    
-    set_pattern()
-
-
+    set_pattern(te)
             
-    mx,my=0,0
+    local mx,my=0,0
     
     if t.h_align=="c" then
-        mx=-te.width/2
+        mx=-te.width/2-te.x_bearing
     elseif t.h_align=="r" then
         mx=-te.width
     end
@@ -265,16 +285,19 @@ function display_text(t)
         
    if t.reflection_alpha ~= 0 then 
         local matrix1 = cairo_matrix_t:create()
+		tolua.takeownership(matrix1)         
         cairo_set_font_size(cr,t.font_size)
 
         cairo_matrix_init (matrix1,1,0,0,-1*t.reflection_scale,0,(te.height+te.y_bearing+my)*(1+t.reflection_scale))
         cairo_set_font_size(cr,t.font_size)
-        te=cairo_text_extents_t:create()
+        te=nil
+        local te=cairo_text_extents_t:create()
+        tolua.takeownership(te) 
         cairo_text_extents (cr,t.text,te)
         
                 
         cairo_transform(cr,matrix1)
-        set_pattern()
+        set_pattern(te)
         cairo_move_to(cr,mx,my)
         cairo_show_text(cr,t.text)
 
@@ -285,9 +308,9 @@ function display_text(t)
         cairo_pattern_add_color_stop_rgba (pat2, 0,1,0,0,1-t.reflection_alpha)
         cairo_pattern_add_color_stop_rgba (pat2, t.reflection_length,0,0,0,1)    
         
-        
+        --line is not drawn but with a size of zero, the mask won't be nice
         cairo_set_line_width(cr,1)
-        dy=te.x_bearing
+        local dy=te.x_bearing
         if dy<0 then dy=dy*(-1) end
         cairo_rectangle(cr,mx+te.x_bearing,te.y_bearing+te.height+my,te.width+dy,-te.height*1.05)
         cairo_clip_preserve(cr)
@@ -296,6 +319,7 @@ function display_text(t)
         cairo_mask(cr,pat2)
         cairo_pattern_destroy(pat2)
         cairo_set_operator(cr,CAIRO_OPERATOR_OVER)
+        te=nil
     end
     
 end
@@ -315,7 +339,7 @@ function linear_orientation(t,te)
     elseif t.v_align=="t" then
         yb=0
        end    
-       
+    local p=0
     if t.orientation=="nn" then
         p={xb+w/2,yb,xb+w/2,yb+h}
     elseif t.orientation=="ne" then
@@ -326,7 +350,7 @@ function linear_orientation(t,te)
         p={xb+w,yb+h,xb,yb}
     elseif t.orientation=="ss" then
         p={xb+w/2,yb+h,xb+w/2,yb}
-    elseif vorientation=="ee" then
+    elseif t.orientation=="ee" then
         p={xb+w,h/2,xb,h/2}        
     elseif t.orientation=="sw" then
         p={xb,yb+h,xb+w,yb}

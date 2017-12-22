@@ -7,13 +7,17 @@ killall conky
         # Making sure theme-dir is working-dir
         cd "$(dirname "$0")"
 
-    ( set -x; setsid conky -c conky.conf )
+# start system conky
+ sh conky-system-lua-V3/autostart.sh
     sleep 1
 # start clock conky
  sh conky-clock-lua-V1/autostart.sh
 sleep 1
 # start  cores conky
  sh conky-cores-lua/autostart.sh
+sleep 1
+# start  vnstat conky
+ sh conky-vnstat-lua/autostart.sh
 
 
 exit

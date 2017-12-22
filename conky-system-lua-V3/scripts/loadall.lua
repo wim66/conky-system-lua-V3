@@ -1,23 +1,24 @@
 
--- Set the path to the scripts foder
+-- Set the path to the scripts folder
 package.path = "./scripts/?.lua"
 -- ###################################
 
 
-require 'lua0-box2'
+require 'lua0-box'
 require 'lua1-graphs'
 require 'lua2-text'
+require 'lua3-bars'
 
 function conky_main()
      conky_main_box()
      conky_main_graph()
      conky_draw_text()
-
+     conky_main_bars()
 end
 
 --[[
 #########################
-# conky-cores-lua       #
+# conky-system-lua-V3   #
 # by +WillemO @wim66    #
 # v1.4 22-dec-17        #
 #                       #

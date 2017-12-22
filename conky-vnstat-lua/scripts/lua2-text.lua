@@ -1,12 +1,11 @@
 --[[
 #########################
-# conky-system-lua-V3   #
+# conky-vnstat-lua      #
 # by +WillemO @wim66    #
-# v1.3 21-dec-17        #
+# v1.0 21-dec-17        #
 #                       #
 #########################
 ]]
-
 
 --[[TEXT WIDGET v1.42 by Wlourf 07 Feb. 2011
 
@@ -101,199 +100,118 @@ function conky_draw_text()
 	local h=conky_window.height
 		local xc=w/2
 		local yc=h/2
-   	local color1={{0,0xE7660B,1}}
+        
+    local color1={{0,0xE7660B,1}}
 	local color2={{0,0xFAAD3E,1}}
 	local color3={{0,0xDCE142,1}}
-
+    local color4={{0,0X42E147,1}}
+    
     text_settings={
+        {
+			text=conky_parse("${execi 60 scripts/vnstat.sh}"),
 
-		{
-			text=conky_parse("${if_existing /usr/bin/lsb_release} ${execi 10000 lsb_release -d | cut -f 2}${else} $distribution  ${endif}"),
-            font_name="Dejavu Sans Mono",bold=true,
-            font_size=22, bold="true",
-			h_align="c",
-			x=xc,
-			y=35,
-            colour={{0.35,0xE7660B,1},{0.8,0xDCE142,1},{0.99,0xE7660B,1}},
-		},
-
-		{
-			text=conky_parse( "$sysname ${kernel}" ),
+		}, 
+        
+        
+        {
+			text="VNSTAT -",
 			x=20,
-			y=55,
-			colour=color2,
-		},
-
-		{
-			text=conky_parse( "Uptime:       ${uptime}" ),
-			x=20,
-			y=72,
-			colour=color2,
+			y=30,
+            font_size=20,
+			colour=color1,
 		},
         
         {
-			text=conky_parse("${execi 6000 cat /proc/cpuinfo | grep -i 'Model name' -m 1 | cut -c14-43}"),
-			x=20,
-			y=92,
-			colour=color2,
-		},
-
-		{
-			text=conky_parse("CPU: ${execi 5 sensors|grep 'Package'|awk '{print $4}'}  ${cpu cpu1}%"),
-            bold="true",
-            h_align="c",
-			x=xc,
-			y=117,
-			colour=color3,
-		},
-
-		{
-			text="Memory",
-			h_align="c",
-			x=xc,
-			y=200,
-			colour=color3,
-		},
-
-		{
-			text=conky_parse("Used ${mem}                         Free ${memeasyfree}"),
-
-			x=20,
-			y=216,
-			colour=color2,
-		},
-
-		{
-			text="Disks",
-			h_align="c",
-			x=xc,
-			y=266,
-			colour=color3,
-		},
-
-		{
-			text=conky_parse("Root Used ${fs_used /}              Free ${fs_free /}"),
-			x=20,
-			y=285,
-			colour=color2,
-		},
-
-		{
-			text=conky_parse("Home Used ${fs_used /home/}         Free ${fs_free /home/}"),
-			x=20,
-			y=320,
-			colour=color2,
-		},
-
-		{
-			text="Network speed",
-			h_align="c",
-			x=xc,
-			y=360,
-			colour=color3,
-		},
-        
-		{
-			text="Up",
-			x=23,
-			y=380,
-			colour=color2,
-		},
-		{
-			text=conky_parse(var_NETUP),
-			h_align="r",            
+			text="network traffic",
 			x=120,
-			y=380,
-			colour=color2,
+			y=30,
+            font_size=14,
+			colour=color4,
 		},
         
-   		{
-			text="Down",
-			x=142,
-			y=380,
-			colour=color2,
-		},
-		{
-			text=conky_parse(var_NETDOWN),
-			h_align="r",            
+        {
+			text="Down                            Up",
+            h_align="r",
 			x=240,
-			y=380,
-			colour=color2,
-		},     
+			y=50,
+			colour=color3,
+		},
         
         {
-			text="Total",
-			x=23,
-			y=442,
-			colour=color2,
+			text="Today",
+			x=20,
+			y=70,
+			colour=color3,
 		},
-
+        
         {
-			text=conky_parse(var_TOTALUP),
-			h_align="r",            
-			x=120,
-			y=442,
+			text=conky_parse("${execi 60 sleep 1 && awk 'NR==1' scripts/vnstat.txt}"),
+            font_name="arial",
+            h_align="r",
+			x=140,
+			y=70,
 			colour=color2,
-		},
-
+		}, 
+        
         {
-			text="Total",
-			x=142,
-			y=442,
-			colour=color2,
-		},
-
-        {
-			text=conky_parse(var_TOTALDOWN),
-			h_align="r",            
+			text=conky_parse("${execi 60 sleep 1 && awk 'NR==2' scripts/vnstat.txt}"),
+            font_name="arial",
+            h_align="r",
 			x=240,
-			y=442,
+			y=70,
 			colour=color2,
 		},
         
-		{
-			text="Processes",
-			h_align="c",
-			x=xc,
-			y=464,
-			colour=color3,
-		},
-
-		{text=conky_parse("${top name 1}"),x=20,y=480,colour={{0,0X42E147,1}},font_size=16,},  
-		{text=conky_parse("${top name 2}"),x=20,y=498,colour={{0,0X42E147,0.85}},font_size=16,},
-		{text=conky_parse("${top name 3}"),x=20,y=516,colour={{0,0X42E147,0.70}},font_size=16,},
-		{text=conky_parse("${top name 4}"),x=20,y=534,colour={{0,0X42E147,0.55}},font_size=16,},
-		{text=conky_parse("${top name 5}"),x=20,y=552,colour={{0,0X42E147,0.40}},font_size=16,},
-		{text=conky_parse("${top name 6}"),x=20,y=570,colour={{0,0X42E147,0.25}},font_size=16,},
-        
-
-		{text=conky_parse("${top cpu 1}%"),x=228,y=480,h_align="r",colour={{0,0X42E147,1}},font_size=16,},
-		{text=conky_parse("${top cpu 2}%"),x=228,y=498,h_align="r",colour={{0,0X42E147,0.85}},font_size=16,},
-		{text=conky_parse("${top cpu 3}%"),x=228,y=516,h_align="r",colour={{0,0X42E147,0.70}},font_size=16,},
-		{text=conky_parse("${top cpu 4}%"),x=228,y=534,h_align="r",colour={{0,0X42E147,0.55}},font_size=16,},
-		{text=conky_parse("${top cpu 5}%"),x=228,y=552,h_align="r",colour={{0,0X42E147,0.40}},font_size=16,},
-		{text=conky_parse("${top cpu 6}%"),x=228,y=570,h_align="r",colour={{0,0X42E147,0.25}},font_size=16,},
-
-        
-   		{
-			text=conky_parse("${if_existing /usr/lib/update-notifier/apt-check} ${execi 1800 /usr/lib/update-notifier/apt-check --human-readable | awk 'NR==1'}${else} Available updates: ${execi 1800 checkupdates | wc -l}  ${endif}"),
-			h_align="c",
-			x=xc,
-			y=600,
-            font_name="arial", bold="true",
-            font_size=12,
+        {
+			text="Week",
+			x=20,
+			y=90,
 			colour=color3,
 		},
         
-           		{
-			text=conky_parse( "${if_existing /usr/lib/update-notifier/apt-check} ${execi 1800 /usr/lib/update-notifier/apt-check --human-readable | awk 'NR==2'} ${endif}" ),
-			h_align="c",
-			x=xc,
-			y=620,
-            font_name="arial", bold="true",
-            font_size=12,
+        {
+			text=conky_parse("${execi 60 sleep 1 && awk 'NR==3' scripts/vnstat.txt}"),
+            font_name="arial",
+            h_align="r",
+			x=140,
+			y=90,
+			colour=color2,
+		}, 
+        
+        {
+			text=conky_parse("${execi 60 sleep 1 && awk 'NR==4' scripts/vnstat.txt}"),
+            font_name="arial",
+            h_align="r",
+			x=240,
+			y=90,
+			colour=color2,
+		},
+        
+        {
+			text="Month",
+			x=20,
+			y=110,
 			colour=color3,
 		},
+        
+        {
+			text=conky_parse("${execi 60 sleep 1 && awk 'NR==5' scripts/vnstat.txt}"),
+            font_name="arial",
+            h_align="r",
+			x=140,
+			y=110,
+			colour=color2,
+		}, 
+        
+        {
+			text=conky_parse("${execi 60 sleep 1 && awk 'NR==6' scripts/vnstat.txt}"),
+            font_name="arial",
+            h_align="r",
+			x=240,
+			y=110,
+			colour=color2,
+		},
+
 	}
 
 

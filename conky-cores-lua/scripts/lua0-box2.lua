@@ -2,7 +2,7 @@
 #########################
 # conky-cores-lua       #
 # by +WillemO @wim66    #
-# v1.4 22-dec-17        #
+# v1.5 23-dec-17        #
 #                       #
 #########################
 ]]
@@ -111,7 +111,7 @@ function conky_main_box()
 
 {
 	x=10,y=10,w=245,h=158,
-	colour= { {1,0x000000,0.66} }, 
+	colour= { {1,0x000000,0.9} }, 
         corners={ {"circle",5},},
 
 	},
@@ -216,6 +216,7 @@ function draw_box(cr,t)
     if border_COLOR == "green" then color_x = { {0,0x003E00,1}, {0.5,0x03F404,1}, {1,0x003E00,1} } end
     if border_COLOR == "blue" then color_x =  { {0,0x0032FF,1}, {0.5,0x00CCFF,1}, {1,0x0032FF,1} } end
     if border_COLOR == "orange" then color_x =  { {0,0xE05700,1}, {0.5,0xFFD145,1}, {1,0xE05700,1} } end
+    if border_COLOR == "black" then color_x =  { {0.15,0x101010,1}, {0.5,0xA1A1A1,1}, {0.85,0x101010,1} } end
                                                                                        
     if t.x == nil then t.x = 0 end
     if t.y == nil then t.y = 0 end

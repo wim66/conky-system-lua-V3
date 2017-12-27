@@ -109,22 +109,25 @@ function conky_main_box()
                                                                                        
     local boxes_settings={
 
-{
+{   --base
 	x=10,y=10,w=245,h=158,
 	colour= { {1,0x000000,0.9} }, 
         corners={ {"circle",5},},
+        draw_me=true,                                                                               
 
 	},
 
-	{
+	{ --border
 	x=4,y=4,w=257,h=170,
 	colour=color_x, linear_gradient={128,15,128,155},
-        corners={ {"circle",5},}, border=4 
+        corners={ {"circle",5},}, border=4,
+        draw_me=true,                                                                               
 	},
 
-	{
+	{ --nearly transparent layer for glow effect
 	x=8,y=8,w=249,h=162,
 	colour= { {0,0xFFFFFF,0.05}, {0.5,0xC2C2C2,0.2}, {1,0xFFFFFF,0.05}}, linear_gradient={0,0,0,162},
+    draw_me=true,                                                                                   
 	},
 
 }

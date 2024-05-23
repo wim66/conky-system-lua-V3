@@ -6,3 +6,5 @@
 
 <p align="center"> <img src="https://raw.githubusercontent.com/wim66/conky-system-lua-V3/master/preview.png" alt="image"></p>
 
+The vnstat conky needs vnstat 1.18 https://github.com/vergoh/vnstat/releases/tag/v1.18
+

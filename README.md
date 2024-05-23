@@ -2,7 +2,8 @@
 
 # A collection of Conkies
 
-## The vnstat conky needs vnstat 1.18 https://github.com/vergoh/vnstat/releases/tag/v1.18
+## The vnstat conky needs vnstat 1.18
+ https://github.com/vergoh/vnstat/releases/tag/v1.18
 
 ### Fonts used: [Candlescript](https://www.dafont.com/candlescript.font) & [Zekton](https://www.dafont.com/zekton.font)
 
